@@ -1,0 +1,7 @@
+import rsa, chacha20
+
+def main():
+    print("test")
+
+if __name__ == "__main__":
+    main()
