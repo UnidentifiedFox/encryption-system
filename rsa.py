@@ -1,3 +1,5 @@
+#needs refactoring, optimization and error handling
+
 import secrets, math
 
 #TODO implement miller-rabin for a faster algorithm
