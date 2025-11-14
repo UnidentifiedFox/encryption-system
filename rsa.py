@@ -1,36 +1,46 @@
-#needs refactoring, optimization and error handling
-
 import secrets, math
 
-#TODO implement miller-rabin for a faster algorithm
-def is_prime(n):
+def miller_rabin(n, k=40):
+    #redundant initial checks assuming lsb and msb is 1
     if n < 2:
         return False
-    if n == 2:
+    if n in (2, 3):
         return True
     if n % 2 == 0:
         return False
+    
+    r = 0
+    d = n - 1
+    while d % 2 == 0:
+        d //= 2
+        r += 1
+    
+    for _ in range(k):
+        a = secrets.randbelow(n-3) + 2
+        x = pow(a, d, n)
 
-    for i in range(3, int(math.sqrt(n)) + 1, 2):
-        if n % i == 0:
+        if x == 1 or x == n - 1:
+            continue
+
+        for _ in range(r-1):
+            x = pow(x, 2, n)
+            if x == n - 1:
+                break
+        else:
             return False
-
+            
     return True
 
 def generate_prime(bits):
-    prime = secrets.randbits(bits)
-    prime |= (1 << (bits - 1)) #msb to 1
-    prime |= 1 #lsb to 1
-
-    #TODO set a limit
-    while(not is_prime(prime)):
+    while True:
         prime = secrets.randbits(bits)
         prime |= (1 << (bits - 1))
         prime |= 1
-    
-    return prime
 
-def generate_rsa_keys(bits):
+        if miller_rabin(prime):
+            return prime
+
+def generate_keys(bits):
     half = bits // 2
     while True:
         p = generate_prime(half)
