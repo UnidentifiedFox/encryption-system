@@ -1,15 +1,16 @@
-import rsa, chacha20
+import rsa, secrets
+import chacha20 as cha
 
 def main():
-    keys = rsa.generate_keys(2048)
-    m = 15
-    print(f"message: {m}")
+    key = secrets.token_bytes(32)
+    nonce = secrets.token_bytes(12)
+    m = b"test"
 
-    cipher = rsa.encrypt(m, keys["public_key"])
-    print(f"encrypted: {cipher}")
+    cipher = cha.encrypt(key, nonce, m)
+    print(cipher)
 
-    clear = rsa.decrypt(cipher, keys["private_key"])
-    print(f"decrypted: {clear}")
+    print(cha.decrypt(key, nonce, cipher))
+
 
 if __name__ == "__main__":
     main()

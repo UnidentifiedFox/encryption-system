@@ -1,7 +1,6 @@
-import secrets, math
+import secrets
 
 def miller_rabin(n, k=40):
-    #redundant initial checks assuming lsb and msb is 1
     if n < 2:
         return False
     if n in (2, 3):
@@ -33,12 +32,12 @@ def miller_rabin(n, k=40):
 
 def generate_prime(bits):
     while True:
-        prime = secrets.randbits(bits)
-        prime |= (1 << (bits - 1))
-        prime |= 1
+        candidate = secrets.randbits(bits)
+        candidate |= (1 << (bits - 1))
+        candidate |= 1
 
-        if miller_rabin(prime):
-            return prime
+        if miller_rabin(candidate):
+            return candidate
 
 def generate_keys(bits):
     half = bits // 2
@@ -60,8 +59,11 @@ def generate_keys(bits):
         "private_key": (d, n)
     }
 
-def encrypt(m, k):
-    return pow(m, k[0], k[1])
+#textbook rsa no padding!
+def encrypt(m, key):
+    e, n = key
+    return pow(m, e, n)
 
-def decrypt(c, k):
-    return pow(c, k[0], k[1])
+def decrypt(c, key):
+    d, n = key
+    return pow(c, d, n)
