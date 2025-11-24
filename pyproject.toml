@@ -1,0 +1,10 @@
+[project]
+name = "encryption-system"
+version = "0.1.0"
+description = "A Hybrid Encryption System"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "pikepdf>=10.0.2",
+    "reportlab>=4.4.5",
+]

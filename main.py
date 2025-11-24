@@ -12,7 +12,9 @@ def main():
     cipher = cha.encrypt(chacha_key, chacha_nonce, m)
     rsa_keys = rsa.generate_keys(2048)
     chacha_key_nonce =  chacha_nonce + chacha_key
-    encrypted_key_nonce = rsa.encrypt(int.from_bytes(chacha_key_nonce, "big"), rsa_keys["private_key"]).to_bytes(256, "big")
+
+    encrypted_key_nonce = rsa.encrypt(int.from_bytes(chacha_key_nonce, "big"), 
+                                      rsa_keys["private_key"]).to_bytes(256, "big")
 
     pdf_path = "./sample.pdf"
     create_pdf(pdf_path)
@@ -28,7 +30,9 @@ def main():
     extr_encrypted_key_nonce =  base64.b64decode(extr_payload["encrypted_key_nonce"])
     extr_cipher = base64.b64decode(extr_payload["ciphertext"])
 
-    decrypted_key_nonce = rsa.decrypt(int.from_bytes(extr_encrypted_key_nonce, "big"), rsa_keys["public_key"]).to_bytes(44, "big")
+    decrypted_key_nonce = rsa.decrypt(int.from_bytes(extr_encrypted_key_nonce, "big"),
+                                      rsa_keys["public_key"]).to_bytes(44, "big")
+    
     decrypted_nonce = decrypted_key_nonce[:12]
     decrypted_key = decrypted_key_nonce[12:]
 
