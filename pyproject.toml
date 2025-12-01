@@ -8,3 +8,6 @@ dependencies = [
     "pikepdf>=10.0.2",
     "reportlab>=4.4.5",
 ]
+
+[project.scripts]
+encryption-system = "encryption_system.main:main"
