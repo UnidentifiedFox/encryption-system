@@ -1,5 +1,6 @@
 import secrets
 
+
 def miller_rabin(n, k=40):
     if n < 2:
         return False
@@ -30,6 +31,7 @@ def miller_rabin(n, k=40):
             
     return True
 
+
 def generate_prime(bits):
     while True:
         candidate = secrets.randbits(bits)
@@ -38,6 +40,7 @@ def generate_prime(bits):
 
         if miller_rabin(candidate):
             return candidate
+
 
 def generate_keys(bits):
     half = bits // 2
@@ -59,10 +62,11 @@ def generate_keys(bits):
         "private_key": (d, n)
     }
 
-#textbook rsa no padding!
+
 def encrypt(m, key):
     e, n = key
     return pow(m, e, n)
+
 
 def decrypt(c, key):
     d, n = key

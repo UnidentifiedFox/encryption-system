@@ -1,4 +1,9 @@
-import secrets, json, base64, socket, argparse, hashlib
+import secrets
+import json
+import base64
+import socket
+import argparse 
+import hashlib
 
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -10,10 +15,10 @@ from . import chacha20 as cha
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("type", choices=["server", "client"], help="Select server or client")
-    parser.add_argument("-m", "--message", help="Enter the path of the message file")
+    parser.add_argument("type", choices=["server", "client"], help="select server or client")
+    parser.add_argument("-m", "--message", help="enter the path of the message file")
     parser.add_argument("-a", "--algorithm", default="chacha20", choices=["chacha20", "rsa"],
-                        help="chacha20 by default, enter rsa to also encrypt the message with rsa")
+                        help="ChaCha20 by default, enter rsa to also encrypt the message with RSA")
     args = parser.parse_args()       
 
     if args.type == "server":
@@ -58,7 +63,7 @@ def server(host="127.0.0.1", port=5000):
                             client_pubkey).to_bytes(32, "big")
     
     if hash != signature:
-        print("Signature mismatch")
+        print("Signature Mismatch!!!")
         return
 
     if extr_algorithm == "chacha20":
@@ -71,7 +76,7 @@ def server(host="127.0.0.1", port=5000):
         print(cha.decrypt(decrypted_key, decrypted_nonce, extr_cipher).decode("utf-8"))
     else:
         decrypted_message = rsa.decrypt(int.from_bytes(extr_cipher, "big"),
-                                        server_keys["private_key"]).to_bytes(256, "big").lstrip(b'\x00')
+                                        server_keys["private_key"]).to_bytes(256, "big")
         
         print(decrypted_message.decode("utf-8"))
 
@@ -93,8 +98,8 @@ def client(message_path, algorithm, host="127.0.0.1", port=5000):
     else:
         message = input("Message to send:").encode("utf-8") 
 
-    if algorithm == "rsa" and len(message) > 256:
-        print("Enter less than 256 bytes for RSA")
+    if algorithm == "rsa" and len(message) >= 256:
+        print("Enter less than 256 bytes for RSA-2048")
         return
 
     client_keys = rsa.generate_keys(2048)
@@ -120,8 +125,7 @@ def client(message_path, algorithm, host="127.0.0.1", port=5000):
                                           server_pubkey).to_bytes(256, "big")
         
     else:
-        padded_message = message.rjust(256, b'\x00')
-        cipher = rsa.encrypt(int.from_bytes(padded_message, "big"),
+        cipher = rsa.encrypt(int.from_bytes(message, "big"),
                              server_pubkey).to_bytes(256, "big")
         encrypted_key_nonce = b""
 
