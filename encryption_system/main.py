@@ -63,7 +63,7 @@ def server(host="127.0.0.1", port=5000):
                             client_pubkey).to_bytes(32, "big")
     
     if hash != signature:
-        print("Signature Mismatch!!!")
+        print("signature mismatch!!!")
         return
 
     if extr_algorithm == "chacha20":
@@ -99,7 +99,7 @@ def client(message_path, algorithm, host="127.0.0.1", port=5000):
         message = input("Message to send:").encode("utf-8") 
 
     if algorithm == "rsa" and len(message) >= 256:
-        print("Enter less than 256 bytes for RSA-2048")
+        print("enter a message less than 256 bytes for RSA-2048")
         return
 
     client_keys = rsa.generate_keys(2048)

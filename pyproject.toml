@@ -11,3 +11,13 @@ dependencies = [
 
 [project.scripts]
 encryption-system = "encryption_system.main:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.1",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "."
+]

@@ -22,7 +22,8 @@ def quarter_round(a, b, c, d):
 
 
 def chacha20_block(key, counter, nonce):
-    assert (len(key) == 32 and len(nonce) == 12), "key must be 32 bytes, nonce 12 bytes"
+    assert len(key) == 32
+    assert len(nonce) == 12
 
     constants = [0x61707865, 0x3320646e, 0x79622d32, 0x6b206574]  # "expand 32-byte k"
     key_words = bytes_to_words(key)

@@ -65,6 +65,8 @@ def generate_keys(bits):
 
 def encrypt(m, key):
     e, n = key
+    if m >= n:
+        raise ValueError("message must be smaller than modulus")
     return pow(m, e, n)
 
 
