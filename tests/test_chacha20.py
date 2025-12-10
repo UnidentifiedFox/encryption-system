@@ -2,6 +2,7 @@ import pytest
 
 from encryption_system import chacha20 as cha
 
+
 def test_rotl32():
     assert cha.rotl32(0x12345678, 16) == 0x56781234
     assert cha.rotl32(0xffffffff, 5) == 0xffffffff
